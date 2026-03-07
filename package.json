@@ -29,6 +29,7 @@
     "directories": {
       "output": "dist"
     },
+    "afterPack": "scripts/afterPack.cjs",
     "artifactName": "HybridBot-${version}-${os}-${arch}.${ext}",
     "files": [
       "src/**/*",

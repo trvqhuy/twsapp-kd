@@ -3,7 +3,10 @@ dist/
 release-version.txt
 backend/bin/
 backend/build/
+backend/*.spec
 backend/__pycache__/
 backend/**/*.pyc
+.venv/
+squashfs-root/
 .DS_Store
 *.log

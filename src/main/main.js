@@ -1,5 +1,5 @@
 import { app, BrowserWindow, ipcMain, dialog } from "electron";
-import { autoUpdater } from "electron-updater";
+import updater from "electron-updater";
 import { fileURLToPath } from "url";
 import path from "path";
 import fs from "fs/promises";
@@ -11,10 +11,13 @@ const __dirname = path.dirname(__filename);
 
 app.commandLine.appendSwitch("disable-gpu-vsync");
 if (process.platform === "linux") {
+  app.disableHardwareAcceleration();
   process.env.ELECTRON_DISABLE_SANDBOX = "1";
   app.commandLine.appendSwitch("no-sandbox");
   app.commandLine.appendSwitch("disable-setuid-sandbox");
 }
+
+const { autoUpdater } = updater;
 
 const parseArgs = () => {
   const args = process.argv.slice(2);
