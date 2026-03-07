@@ -1,0 +1,21 @@
+{
+  "backend": {
+    "host": "127.0.0.1",
+    "port": 8765
+  },
+  "ib": {
+    "host": "127.0.0.1",
+    "port": 7497,
+    "clientId": 99,
+    "accountId": "DU4997853",
+    "dataType": "live",
+    "tradingMode": "paper",
+    "autoConnect": true,
+    "autoReconnect": true,
+    "reconnectDelaySec": 5
+  },
+  "symbolWhitelist": [
+    "SPY",
+    "QQQ"
+  ]
+}

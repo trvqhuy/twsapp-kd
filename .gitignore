@@ -1,0 +1,9 @@
+node_modules/
+dist/
+release-version.txt
+backend/bin/
+backend/build/
+backend/__pycache__/
+backend/**/*.pyc
+.DS_Store
+*.log

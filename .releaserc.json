@@ -1,0 +1,14 @@
+{
+  "branches": ["main"],
+  "plugins": [
+    "@semantic-release/commit-analyzer",
+    "@semantic-release/release-notes-generator",
+    [
+      "@semantic-release/exec",
+      {
+        "prepareCmd": "node scripts/write-release-version.cjs ${nextRelease.version}"
+      }
+    ],
+    "@semantic-release/github"
+  ]
+}

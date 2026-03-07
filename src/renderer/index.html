@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Hybrid Bot</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar">
+        <div class="brand">
+          <div class="brand-mark">HB</div>
+          <div>
+            <div class="brand-title">Hybrid Bot</div>
+            <div class="brand-subtitle">Manual Trigger Desk</div>
+          </div>
+        </div>
+        <nav class="nav">
+          <button class="nav-item active" data-view="dashboard">Dashboard</button>
+          <button class="nav-item" data-view="strategies">Strategy Builder</button>
+          <button class="nav-item" data-view="portfolio">Account</button>
+          <button class="nav-item" data-view="backend">System</button>
+        </nav>
+        <div class="sidebar-footer">
+          <div class="mode-pill" id="mode-pill">Mode: Mock</div>
+          <div class="version" id="app-version"></div>
+        </div>
+      </aside>
+
+      <main class="main">
+        <div class="banner" id="mode-banner" hidden></div>
+        <section class="view" id="view-dashboard" data-view="dashboard">
+          <header class="view-header">
+            <div>
+              <h1>Command Center</h1>
+              <p>Track the market, your strategies, and active execution flow.</p>
+            </div>
+            <div class="header-actions">
+              <button class="ghost" id="refresh-dashboard">Refresh Snapshot</button>
+            </div>
+          </header>
+
+          <div class="grid grid-4" id="account-summary"></div>
+
+          <div class="grid grid-2">
+            <div class="card">
+              <div class="card-title">Market Snapshot</div>
+              <div class="table" id="market-snapshot"></div>
+            </div>
+            <div class="card">
+              <div class="card-title">Execution Monitor</div>
+              <div class="table" id="execution-monitor"></div>
+            </div>
+          </div>
+
+          <div class="grid grid-2">
+            <div class="card">
+              <div class="card-title">Positions</div>
+              <div class="table" id="dashboard-positions"></div>
+            </div>
+            <div class="card">
+              <div class="card-title">Orders</div>
+              <div class="table" id="dashboard-orders"></div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-title">Active Strategies</div>
+            <div class="table" id="active-strategies"></div>
+          </div>
+        </section>
+
+        <section class="view" id="view-strategies" data-view="strategies" hidden>
+          <header class="view-header">
+            <div>
+              <h1>Strategy Builder</h1>
+              <p>Build linear IF/THEN sequences for manual option execution.</p>
+            </div>
+          </header>
+
+          <div class="builder-layout">
+            <div class="builder-sidebar">
+              <div class="card">
+                <div class="card-header">
+                  <div>
+                    <div class="card-title">Strategies</div>
+                  </div>
+                  <div class="header-actions">
+                    <button class="ghost" id="import-strategies">Import</button>
+                    <button class="ghost" id="export-strategies">Export</button>
+                  </div>
+                </div>
+                <div class="play-list scrollbar" id="play-list"></div>
+                <div class="card-footer">
+                  <button class="primary" id="new-play">New Strategy</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="card" id="play-editor"></div>
+          </div>
+        </section>
+
+        <section class="view" id="view-portfolio" data-view="portfolio" hidden>
+          <header class="view-header">
+            <div>
+              <h1>Account Summary</h1>
+              <p>Live IBKR account metrics pulled from the portfolio API.</p>
+            </div>
+          </header>
+          <div class="card portfolio-summary" id="portfolio-summary"></div>
+        </section>
+
+        <section class="view" id="view-backend" data-view="backend" hidden>
+          <header class="view-header">
+            <div>
+              <h1>System Console</h1>
+              <p>Monitor IBKR connectivity, backend status, and runtime configuration.</p>
+            </div>
+            <div class="header-actions">
+              <button class="ghost" id="export-logs">Export Logs</button>
+            </div>
+          </header>
+          <div class="grid grid-2">
+            <div class="card" id="backend-status"></div>
+            <div class="card" id="backend-config"></div>
+          </div>
+          <div class="card" id="update-card">
+            <div class="card-header">
+              <div>
+                <div class="card-title">App Updates</div>
+                <div class="muted">Manual check only</div>
+              </div>
+              <div class="header-actions">
+                <button class="ghost" id="check-updates">Check for Updates</button>
+              </div>
+            </div>
+            <div class="update-panel">
+              <div class="update-row">
+                <div class="update-status">
+                  <span class="status-pill" id="update-status"></span>
+                  <div class="update-message" id="update-message"></div>
+                </div>
+                <div class="update-actions">
+                  <button class="primary" id="download-update" hidden>Download Update</button>
+                  <button class="primary" id="restart-update" hidden>Restart &amp; Install</button>
+                </div>
+              </div>
+              <div class="update-progress" id="update-progress" hidden>
+                <div class="update-progress-bar" id="update-progress-bar"></div>
+              </div>
+              <div class="update-meta" id="update-meta"></div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-title">Backend Logs</div>
+            <div class="log-list scrollbar" id="backend-logs"></div>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <script type="module" src="./app.js"></script>
+  </body>
+</html>

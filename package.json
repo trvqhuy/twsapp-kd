@@ -1,0 +1,66 @@
+{
+  "name": "hybrid-bot-frontend",
+  "version": "0.1.0",
+  "description": "Hybrid Bot GUI (Electron) with mockable backend",
+  "main": "src/main/main.js",
+  "type": "module",
+  "scripts": {
+    "start": "electron .",
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder",
+    "build:backend": "python backend/build_backend.py",
+    "release": "semantic-release"
+  },
+  "dependencies": {
+    "electron-updater": "^6.3.9"
+  },
+  "devDependencies": {
+    "@semantic-release/commit-analyzer": "^12.0.0",
+    "@semantic-release/exec": "^6.0.3",
+    "@semantic-release/github": "^10.0.3",
+    "@semantic-release/release-notes-generator": "^13.0.0",
+    "electron": "^31.3.1",
+    "electron-builder": "^24.13.3",
+    "semantic-release": "^23.0.2"
+  },
+  "build": {
+    "appId": "com.kyle.hybridbot",
+    "productName": "Hybrid Bot",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "src/**/*",
+      "package.json"
+    ],
+    "extraResources": [
+      {
+        "from": "backend/bin",
+        "to": "backend/bin",
+        "filter": [
+          "**/*"
+        ]
+      }
+    ],
+    "asar": true,
+    "asarUnpack": [
+      "backend/bin/**"
+    ],
+    "win": {
+      "target": ["nsis"]
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true
+    },
+    "linux": {
+      "target": ["AppImage"],
+      "category": "Finance"
+    },
+    "publish": [
+      {
+        "provider": "github"
+      }
+    ]
+  }
+}
