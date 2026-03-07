@@ -23,6 +23,36 @@
 - Use Conventional Commits (e.g. `feat: ...`, `fix: ...`) to trigger version bumps.
 - Set `GH_TOKEN` in repo secrets for release automation.
 
+## Installation
+
+Download the latest release from GitHub Releases.
+
+### Windows
+
+- Download the `Hybrid Bot Setup *.exe` (NSIS installer).
+- Run the installer and follow the prompts.
+- If SmartScreen appears, click "More info" → "Run anyway" (unsigned build).
+- Launch from the Start Menu after install.
+- Updates: open System Console → "Check for Updates" → "Download Update" → "Restart & Install".
+
+### Ubuntu
+
+- Download the `Hybrid Bot-*.AppImage` file.
+- Make it executable:
+
+```bash
+chmod +x "Hybrid Bot-*.AppImage"
+```
+
+- Run it:
+
+```bash
+./"Hybrid Bot-*.AppImage"
+```
+
+- Optional: integrate with the desktop by using an AppImage launcher.
+- Updates: open System Console → "Check for Updates" → "Download Update" → "Restart & Install".
+
 ## Requirements
 
 - Node.js 20
