@@ -29,7 +29,7 @@ Download the latest release from GitHub Releases.
 
 ### Windows
 
-- Download the `Hybrid Bot Setup *.exe` (NSIS installer).
+- Download the `HybridBot-*.exe` (NSIS installer).
 - Run the installer and follow the prompts.
 - If SmartScreen appears, click "More info" → "Run anyway" (unsigned build).
 - Launch from the Start Menu after install.
@@ -37,17 +37,17 @@ Download the latest release from GitHub Releases.
 
 ### Ubuntu
 
-- Download the `Hybrid Bot-*.AppImage` file.
+- Download the `HybridBot-*.AppImage` file.
 - Make it executable:
 
 ```bash
-chmod +x "Hybrid Bot-*.AppImage"
+chmod +x "HybridBot-*.AppImage"
 ```
 
 - Run it:
 
 ```bash
-./"Hybrid Bot-*.AppImage"
+./"HybridBot-*.AppImage"
 ```
 
 - Optional: integrate with the desktop by using an AppImage launcher.

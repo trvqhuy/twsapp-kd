@@ -10,6 +10,9 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 app.commandLine.appendSwitch("disable-gpu-vsync");
+if (process.platform === "linux" && app.isPackaged) {
+  app.commandLine.appendSwitch("no-sandbox");
+}
 
 const parseArgs = () => {
   const args = process.argv.slice(2);

@@ -25,10 +25,11 @@
   },
   "build": {
     "appId": "com.kyle.hybridbot",
-    "productName": "Hybrid Bot",
+    "productName": "HybridBot",
     "directories": {
       "output": "dist"
     },
+    "artifactName": "HybridBot-${version}-${os}-${arch}.${ext}",
     "files": [
       "src/**/*",
       "package.json"
