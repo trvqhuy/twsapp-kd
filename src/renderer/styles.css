@@ -269,24 +269,31 @@ button {
 
 .update-panel {
   display: grid;
-  gap: 12px;
+  gap: 14px;
+  padding: 12px 14px 14px;
+  border-radius: var(--radius-md);
+  background: linear-gradient(140deg, rgba(25, 33, 29, 0.65), rgba(17, 24, 21, 0.4));
+  border: 1px solid rgba(227, 176, 98, 0.15);
 }
 
-.update-row {
+
+.update-hero {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 16px;
+  gap: 18px;
   flex-wrap: wrap;
 }
 
-.update-status {
+.update-summary {
   display: grid;
   gap: 6px;
 }
 
 .update-message {
   color: var(--text-secondary);
+  font-size: 15px;
+  font-weight: 500;
 }
 
 .update-actions {
@@ -301,18 +308,67 @@ button {
 }
 
 .update-progress {
-  height: 8px;
+  position: relative;
+  height: 12px;
   border-radius: 999px;
   background: var(--bg-secondary);
-  border: 1px solid var(--border);
+  border: 1px solid rgba(227, 176, 98, 0.2);
   overflow: hidden;
 }
 
 .update-progress-bar {
   height: 100%;
   width: 0%;
-  background: linear-gradient(135deg, #f2c981, #d59c4f);
+  background: linear-gradient(135deg, #f5d76e, #d59c4f);
   transition: width 0.2s ease;
+}
+
+.update-progress-label {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  font-size: 11px;
+  color: #1b1f1d;
+  font-weight: 600;
+}
+
+.update-details {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.update-detail {
+  background: var(--bg-secondary);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  padding: 10px 12px;
+  display: grid;
+  gap: 6px;
+}
+
+.update-detail .label {
+  color: var(--text-muted);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.update-detail .value {
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.update-notes {
+  padding: 10px 12px;
+  border-radius: var(--radius-sm);
+  border: 1px dashed rgba(227, 176, 98, 0.3);
+  background: rgba(16, 20, 18, 0.4);
+  color: var(--text-secondary);
+  font-size: 12px;
+  line-height: 1.5;
+  white-space: pre-wrap;
 }
 
 .table {

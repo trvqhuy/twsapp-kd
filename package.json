@@ -5,7 +5,7 @@
   "main": "src/main/main.js",
   "type": "module",
   "scripts": {
-    "start": "electron .",
+    "start": "node scripts/start.cjs",
     "pack": "electron-builder --dir",
     "dist": "electron-builder",
     "build:backend": "python backend/build_backend.py",

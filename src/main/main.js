@@ -11,10 +11,12 @@ const __dirname = path.dirname(__filename);
 
 app.commandLine.appendSwitch("disable-gpu-vsync");
 if (process.platform === "linux") {
+  process.env.TMPDIR = process.env.TMPDIR || process.env.XDG_RUNTIME_DIR || "/tmp";
   app.disableHardwareAcceleration();
   process.env.ELECTRON_DISABLE_SANDBOX = "1";
   app.commandLine.appendSwitch("no-sandbox");
   app.commandLine.appendSwitch("disable-setuid-sandbox");
+  app.commandLine.appendSwitch("disable-dev-shm-usage");
 }
 
 const { autoUpdater } = updater;

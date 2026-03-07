@@ -137,10 +137,11 @@
               </div>
             </div>
             <div class="update-panel">
-              <div class="update-row">
-                <div class="update-status">
+              <div class="update-hero">
+                <div class="update-summary">
                   <span class="status-pill" id="update-status"></span>
                   <div class="update-message" id="update-message"></div>
+                  <div class="update-meta" id="update-meta"></div>
                 </div>
                 <div class="update-actions">
                   <button class="primary" id="download-update" hidden>Download Update</button>
@@ -149,8 +150,23 @@
               </div>
               <div class="update-progress" id="update-progress" hidden>
                 <div class="update-progress-bar" id="update-progress-bar"></div>
+                <div class="update-progress-label" id="update-progress-label"></div>
               </div>
-              <div class="update-meta" id="update-meta"></div>
+              <div class="update-details">
+                <div class="update-detail">
+                  <div class="label">Current</div>
+                  <div class="value" id="update-current-version">--</div>
+                </div>
+                <div class="update-detail">
+                  <div class="label">Available</div>
+                  <div class="value" id="update-available-version">--</div>
+                </div>
+                <div class="update-detail">
+                  <div class="label">Released</div>
+                  <div class="value" id="update-release-date">--</div>
+                </div>
+              </div>
+              <div class="update-notes" id="update-notes" hidden></div>
             </div>
           </div>
           <div class="card">

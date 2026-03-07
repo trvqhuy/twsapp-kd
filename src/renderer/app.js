@@ -41,7 +41,12 @@ const dom = {
   updateMessage: document.getElementById("update-message"),
   updateProgress: document.getElementById("update-progress"),
   updateProgressBar: document.getElementById("update-progress-bar"),
-  updateMeta: document.getElementById("update-meta")
+  updateProgressLabel: document.getElementById("update-progress-label"),
+  updateMeta: document.getElementById("update-meta"),
+  updateCurrentVersion: document.getElementById("update-current-version"),
+  updateAvailableVersion: document.getElementById("update-available-version"),
+  updateReleaseDate: document.getElementById("update-release-date"),
+  updateNotes: document.getElementById("update-notes")
 };
 
 const navButtons = Array.from(document.querySelectorAll(".nav-item"));
@@ -210,6 +215,16 @@ const renderUpdatePanel = (state) => {
   }
   dom.updateMeta.textContent = metaParts.join(" · ");
 
+  if (dom.updateCurrentVersion) {
+    dom.updateCurrentVersion.textContent = updates.currentVersion ? `v${updates.currentVersion}` : "--";
+  }
+  if (dom.updateAvailableVersion) {
+    dom.updateAvailableVersion.textContent = updates.version ? `v${updates.version}` : "--";
+  }
+  if (dom.updateReleaseDate) {
+    dom.updateReleaseDate.textContent = updates.releaseDate ? formatUpdateDate(updates.releaseDate) : "--";
+  }
+
   const percent = typeof updates.progress === "number"
     ? Math.min(100, Math.max(0, updates.progress))
     : null;
@@ -217,6 +232,19 @@ const renderUpdatePanel = (state) => {
     const showProgress = status === "downloading" && percent !== null;
     dom.updateProgress.hidden = !showProgress;
     dom.updateProgressBar.style.width = showProgress ? `${Math.round(percent)}%` : "0%";
+    if (dom.updateProgressLabel) {
+      dom.updateProgressLabel.textContent = showProgress ? `${Math.round(percent)}% downloaded` : "";
+    }
+  }
+
+  if (dom.updateNotes) {
+    if (updates.releaseNotes) {
+      dom.updateNotes.textContent = updates.releaseNotes;
+      dom.updateNotes.hidden = false;
+    } else {
+      dom.updateNotes.textContent = "";
+      dom.updateNotes.hidden = true;
+    }
   }
 
   if (dom.downloadUpdate) {
@@ -2172,6 +2200,7 @@ const init = async () => {
   appendBackendLog(`Backend URL: ${resolvedBackendUrl}`, "info");
   dom.modePill.textContent = "Mode: Live";
   dom.appVersion.textContent = `v${runtime.appVersion}`;
+  setUpdateState({ currentVersion: runtime.appVersion }, "update-status");
   if (runtime.banner) {
     bannerMessages.push(runtime.banner);
     appendLog(runtime.banner, "warn");

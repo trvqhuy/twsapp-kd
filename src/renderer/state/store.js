@@ -119,6 +119,7 @@ const defaultState = {
   updates: {
     status: "idle",
     message: "Check for updates to see if a new version is available.",
+    currentVersion: null,
     version: null,
     releaseName: null,
     releaseNotes: null,
