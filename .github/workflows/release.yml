@@ -85,4 +85,4 @@ jobs:
       - name: Build and publish app
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
-        run: npx electron-builder --publish always -c.extraMetadata.version=${{ needs.release.outputs.version }}
+        run: npx electron-builder --publish always --config.extraMetadata.version=${{ needs.release.outputs.version }}
