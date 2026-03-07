@@ -85,4 +85,32 @@ jobs:
       - name: Build and publish app
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
-        run: npx electron-builder --publish always --config.extraMetadata.version=${{ needs.release.outputs.version }}
+        run: npx electron-builder --publish never --config.extraMetadata.version=${{ needs.release.outputs.version }}
+
+      - name: Upload Windows artifacts
+        if: runner.os == 'Windows'
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ needs.release.outputs.version }}
+          files: |
+            dist/*.exe
+            dist/*.yml
+            dist/*.blockmap
+            dist/*.zip
+          fail_on_unmatched_files: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+
+      - name: Upload Linux artifacts
+        if: runner.os == 'Linux'
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ needs.release.outputs.version }}
+          files: |
+            dist/*.AppImage
+            dist/*.yml
+            dist/*.blockmap
+            dist/*.zip
+          fail_on_unmatched_files: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
