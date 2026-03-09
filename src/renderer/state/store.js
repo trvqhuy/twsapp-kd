@@ -49,7 +49,7 @@ const createPlayTemplate = (symbol = "SPY", index = 1) => ({
   },
   side: "CALL",
   versionTarget: botVersions[0].id,
-  quantity: 1,
+  quantity: 0,
   steps: [
     createStepTemplate(),
     {

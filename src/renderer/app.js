@@ -450,7 +450,7 @@ const normalizeStrategy = (play, fallbackIndex = 1) => {
     },
     side: base.side || "CALL",
     versionTarget: base.versionTarget || getState().config.versionTargets[0]?.id,
-    quantity: Number.isFinite(Number(base.quantity)) ? Number(base.quantity) : 1,
+    quantity: Number.isFinite(Number(base.quantity)) ? Number(base.quantity) : 0,
     steps: Array.isArray(base.steps) && base.steps.length ? base.steps : [createStepTemplate()],
     stepCursor: 0,
     stepTriggeredBranchId: null,
@@ -619,8 +619,10 @@ const buildPreviewLines = (play) => {
         ? `Price Rises to ${formatCurrency(conditionValue)}`
         : `Price Drops to ${formatCurrency(conditionValue)}`;
       const actionLabel = branch.action?.type === "ACTION_SELL" ? "Sell" : "Buy";
-      const qtyValue = branch.action?.quantity || play.quantity;
-      const qtyLabel = qtyValue ? `${qtyValue} contract${qtyValue > 1 ? "s" : ""}` : "contracts";
+      const qtyValue = branch.action?.quantity ?? play.quantity;
+      const qtyLabel = Number.isFinite(qtyValue)
+        ? `${qtyValue} contract${qtyValue === 1 ? "" : "s"}`
+        : "contracts";
       const prefix = branchIndex === 0 ? "IF" : "OR IF";
       return `${prefix} ${conditionLabel} THEN ${actionLabel} ${qtyLabel}`;
     });
@@ -740,8 +742,10 @@ const getNextStepLabel = (play, lastPrice) => {
     return `${stepLabel}: Waiting for price ${branchHints}`;
   }
   const actionLabel = triggeredBranch.action?.type === "ACTION_SELL" ? "Sell" : "Buy";
-  const qtyValue = triggeredBranch.action?.quantity || play.quantity;
-  const qtyLabel = qtyValue ? `${qtyValue} contract${qtyValue > 1 ? "s" : ""}` : "contracts";
+  const qtyValue = triggeredBranch.action?.quantity ?? play.quantity;
+  const qtyLabel = Number.isFinite(qtyValue)
+    ? `${qtyValue} contract${qtyValue === 1 ? "" : "s"}`
+    : "contracts";
   return `${stepLabel}: Then ${actionLabel} ${qtyLabel}`;
 };
 
@@ -941,7 +945,7 @@ const renderPlayEditor = (state) => {
           </label>
           <label class="field">
             Quantity
-            <input type="number" step="1" data-field="quantity" value="${play.quantity}" />
+            <input type="number" step="1" min="0" data-field="quantity" value="${play.quantity}" />
           </label>
           <label class="field">
             Auto Pause Others
@@ -1040,7 +1044,7 @@ const renderPlayEditor = (state) => {
                           attrValue: "type",
                           variant: "compact"
                         })}
-                        <input type="number" step="1" min="1" data-action-field="quantity" placeholder="${play.quantity} default" value="${branch.action.quantity ?? ""}" />
+                        <input type="number" step="1" min="0" data-action-field="quantity" placeholder="${play.quantity} default" value="${branch.action.quantity ?? ""}" />
                         <button data-action="remove-branch">Remove</button>
                       </div>
                     `)
@@ -2854,13 +2858,39 @@ const init = async () => {
           continue;
         }
 
+        const resolvedQuantity = Number(branch.action.quantity ?? next.quantity);
+        if (!Number.isFinite(resolvedQuantity)) {
+          next.state.status = "Error";
+          next.state.stage = "Invalid quantity";
+          next.state.message = "Quantity must be a number.";
+          plays.push(next);
+          continue;
+        }
+        if (branch.action.type === "ACTION_SELL" && resolvedQuantity <= 0) {
+          next.state.status = "Error";
+          next.state.stage = "Sell requires contracts";
+          next.state.message = "Sell action requires quantity greater than 0.";
+          plays.push(next);
+          continue;
+        }
+        if (branch.action.type === "ACTION_BUY" && resolvedQuantity <= 0) {
+          next.stepCursor += 1;
+          next.stepTriggeredBranchId = null;
+          next.pendingAction = null;
+          next.state.status = next.stepCursor >= next.steps.length ? "Completed" : "Active";
+          next.state.stage = next.stepCursor >= next.steps.length
+            ? "All steps complete"
+            : `Step ${next.stepCursor + 1}: Waiting for IF`;
+          next.state.lastTriggeredAt = now.toISOString();
+          plays.push(next);
+          continue;
+        }
         if (next.autoDeactivateOthers && next.stepCursor === 0) {
           autoPause = {
             playId: next.playId,
             untilDateKey: getNextMarketSessionDateKey(marketNow)
           };
         }
-
         if (branch.action.type === "ACTION_SELL" && !next.state.openPosition) {
           next.state.status = "Error";
           next.state.stage = "Sell requires position";
@@ -2934,7 +2964,7 @@ const init = async () => {
           playId: next.playId,
           symbol: next.symbol,
           side: branch.action.type === "ACTION_BUY" ? "BUY" : "SELL",
-          quantity: branch.action.quantity || next.quantity,
+          quantity: resolvedQuantity,
           option: { ...optionSelection },
           fillPrice
         });

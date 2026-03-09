@@ -5,6 +5,11 @@ const isPositiveNumber = (value) => {
   return Number.isFinite(number) && number > 0;
 };
 
+const isNonNegativeNumber = (value) => {
+  const number = Number(value);
+  return Number.isFinite(number) && number >= 0;
+};
+
 const validateConfig = (config) => {
   const errors = [];
   if (!config) {
@@ -45,8 +50,12 @@ const validateSteps = (steps) => {
         errors.push(`Step ${index + 1}, branch ${branchIndex + 1} must include a Buy or Sell action.`);
       }
       if (branch.action && branch.action.quantity !== null && branch.action.quantity !== undefined) {
-        if (!isPositiveNumber(branch.action.quantity)) {
-          errors.push(`Step ${index + 1}, branch ${branchIndex + 1} quantity must be greater than 0.`);
+        if (branch.action.type === "ACTION_SELL") {
+          if (!isPositiveNumber(branch.action.quantity)) {
+            errors.push(`Step ${index + 1}, branch ${branchIndex + 1} sell quantity must be greater than 0.`);
+          }
+        } else if (!isNonNegativeNumber(branch.action.quantity)) {
+          errors.push(`Step ${index + 1}, branch ${branchIndex + 1} quantity must be 0 or greater.`);
         }
       }
       errors.push(...validateCondition(branch.condition, index, branchIndex));
@@ -89,11 +98,23 @@ const validatePlay = (play, config) => {
       errors.push("Bot version selection is invalid.");
     }
   }
-  if (!Number.isFinite(Number(play.quantity)) || Number(play.quantity) <= 0) {
-    errors.push("Quantity must be greater than 0.");
+  const playQuantity = Number(play.quantity);
+  if (!Number.isFinite(playQuantity) || playQuantity < 0) {
+    errors.push("Quantity must be 0 or greater.");
   }
   errors.push(...validateSchedule(play.schedule));
   errors.push(...validateSteps(play.steps));
+  (play.steps || []).forEach((step, index) => {
+    (step.branches || []).forEach((branch, branchIndex) => {
+      if (branch.action?.type !== "ACTION_SELL") {
+        return;
+      }
+      const resolvedQuantity = branch.action.quantity ?? playQuantity;
+      if (!Number.isFinite(Number(resolvedQuantity)) || Number(resolvedQuantity) <= 0) {
+        errors.push(`Step ${index + 1}, branch ${branchIndex + 1} sell quantity must be greater than 0.`);
+      }
+    });
+  });
   return errors;
 };
 
